@@ -39,3 +39,27 @@ codegen dbrepo gorm -c sqlgen.yaml --mock-type sqlite --mock-type docker
 ```
 
 生成文件的文件在如下地址(文件已存则不会重复生成)
+
+4. 如何使用？
+   ```go
+    import "github.com/xyzbit/gpkg/gormx"
+    // ....
+    
+    // 列表查询
+    users, err := s.usersRepo.List(ctx, gormx.NewQuery().Eq(entity.UserNickName, "lee"))
+
+    // 事务
+    err := gormx.Transaction(ctx, repo, func(txCtx context.Context) error {
+		user, err := userRepo.Create(txCtx, &User{UserNickName: "test"})
+		if err != nil {
+			return err
+		}
+
+		err = logRepo.Update(txCtx, &Log{Content: user.Name})
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+
+   ```
