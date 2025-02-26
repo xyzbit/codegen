@@ -1,0 +1,1 @@
+{{UpperCamel .Name}} {{.GoType}} `{{ColumnTag}}json:"{{LowerCamel .Name}}"`
