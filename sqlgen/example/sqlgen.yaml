@@ -1,0 +1,64 @@
+# ===================================
+# SQLGen 配置文件示例
+# ===================================
+
+# 数据库连接字符串 (二选一：dsn 或 filename)
+# 格式：[username]:[password]@tcp([host]:[port])/[database]?charset=utf8mb4&parseTime=True&loc=Local
+# dsn: "root:123456@tcp(localhost:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
+
+# SQL文件模式，支持通配符 * (默认: ["*.sql"])
+# 当不使用 dsn 时，将从SQL文件生成代码
+# 示例：
+#  - "*.sql" 表示当前目录下的所有 SQL 文件
+#  - "migrations/*.sql" 表示 migrations 目录下的所有 SQL 文件
+filename:
+  - "./testdata/*.sql"    # testdata 目录下的所有 SQL 文件
+
+# 要生成的表名模式，支持通配符 * (默认: ["*"])
+# 示例：
+#  - "*" 表示所有表
+#  - "user_*" 表示以 user_ 开头的表
+#  - ["order_*", "user_*"] 表示以 order_ 和 user_ 开头的表
+table:
+  - "user_*"     # 所有以 user_ 开头的表
+
+# 输出目录配置
+# -----------------------------------
+
+# 适配器输出目录 (默认: ".")
+# 生成的适配器代码将保存在此目录
+output: "./data"
+
+# 实体输出目录 (默认: ".")
+# 生成的实体代码将保存在此目录
+entity_output: "./entity"
+
+# 仓库接口输出目录 (默认: ".")
+# 生成的仓库接口代码将保存在此目录
+repo_output: "./service"
+
+# 包名配置
+# -----------------------------------
+
+# 实体包名
+# 生成的实体代码的完整包名
+entity_package: "github.com/xyzbit/codegen/sqlgen/example/entity"
+
+# 仓库接口包名
+# 生成的仓库接口代码的完整包名
+repo_package: "github.com/xyzbit/codegen/sqlgen/example/service"
+
+# 功能特性配置
+# -----------------------------------
+
+# 是否开启自动审计 (默认: false !暂不支持)
+# 如果为 true，将自动添加审计字段（如：created_at, updated_at, creator, operator 等）
+# auto_audit: false
+
+# 要生成的 mock 类型 (可选)
+# 可选值：
+#  - sqlite: 生成基于 SQLite 的 mock 代码
+#  - docker: 生成基于 Docker MySQL 的 mock 代码
+mock_types:
+  - sqlite    # 生成 SQLite mock
+  - docker    # 生成 Docker MySQL mock 
