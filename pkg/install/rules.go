@@ -1,0 +1,105 @@
+package install
+
+// DefaultRuleContent 默认的规则文件内容
+const DefaultRuleContent = `# codegen 使用指南
+
+## 简介
+codegen 是一个强大的代码生成工具集，主要用于生成 Go 语言的仓储层(repo)代码，包括模型、仓储层接口以及 CRUD 操作实现。
+
+## 安装
+` + "```" + `bash
+go install codeup.aliyun.com/qimao/pkg/contrib/cmd/codegen@latest
+` + "```" + `
+
+## 主要功能
+- 从 SQL schema 生成 GORM 模型
+- 创建类型安全的仓储层接口
+- 生成 CRUD 操作实现
+- 支持自定义表名
+- 灵活的输出目录结构
+
+## 基本命令
+` + "```" + `bash
+# 显示帮助信息
+codegen sqlgen -h
+
+# 显示版本信息
+codegen sqlgen version
+
+# 显示 GORM 相关帮助
+codegen sqlgen gorm -h
+` + "```" + `
+
+## 常用参数
+| 参数 | 说明 |
+|------|------|
+| --table | 要生成代码的表名模式（支持通配符） |
+| --output | 生成代码的输出目录 |
+| --repo-output | 仓储层实现的输出目录 |
+| --entity-output | 实体/模型定义的输出目录 |
+| --repo-package | 仓储层代码的包名 |
+| --entity-package | 实体/模型代码的包名 |
+
+## 使用示例
+
+### 使用配置文件
+` + "```" + `bash
+codegen sqlgen gorm -c sqlgen.yaml
+` + "```" + `
+
+### 混合使用配置文件和命令行参数
+` + "```" + `bash
+codegen sqlgen gorm -c sqlgen.yaml --mock-type sqlite
+` + "```" + `
+
+### 纯命令行方式
+` + "```" + `bash
+codegen sqlgen gorm \
+    -f ./schema.sql \
+    --table "user*" \
+    --output './gen/data' \
+    --repo-output './gen/service' \
+    --entity-output './gen/entity' \
+    --repo-package 'your.module/gen/service' \
+    --entity-package 'your.module/gen/entity'
+` + "```" + `
+
+## Mock 代码生成
+` + "```" + `bash
+codegen sqlgen gorm -c sqlgen.yaml --mock-type sqlite --mock-type docker
+` + "```" + `
+
+## 代码使用示例
+` + "```" + `go
+import "github.com/xyzbit/gpkg/gormx"
+
+// 列表查询
+users, err := s.usersRepo.List(ctx, gormx.NewQuery().Eq(entity.UserNickName, "lee"))
+
+// 事务
+err := gormx.Transaction(ctx, repo, func(txCtx context.Context) error {
+    user, err := userRepo.Create(txCtx, &User{UserNickName: "test"})
+    if err != nil {
+        return err
+    }
+
+    err = logRepo.Update(txCtx, &Log{Content: user.Name})
+    if err != nil {
+        return err
+    }
+    return nil
+})
+` + "```" + `
+
+## 相关链接
+- [详细文档](https://github.com/xyzbit/codegen/blob/master/README.md)
+- [生成代码使用示例](https://github.com/xyzbit/codegen/tree/master/sqlgen/example)
+
+## Cursor 集成
+当使用 ` + "`codegen install`" + ` 命令时，该文件将被自动安装到 ` + "`.cursor/rules`" + ` 目录下，以实现与 Cursor IDE 的无缝集成。集成后，您可以在 Cursor IDE 中获得：
+
+1. 命令自动补全
+2. 参数提示
+3. 实时语法检查
+4. 代码生成预览
+5. 快速导航到生成的文件`

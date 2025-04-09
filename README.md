@@ -1,5 +1,8 @@
-# Contribc
+# Codegen
 代码生成工具系列
+
+## 安装
+go install github.com/xyzbit/codegen@latest
 
 ## errcode
 
